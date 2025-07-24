@@ -15,10 +15,13 @@ class _TasksPage extends State<TasksPage> {
     [false, 'Make your first app'],
     [false, 'Update first app'],
     [false, 'Learning firabase'],
-    [false, 'Implement new learning'],
+    [
+      false,
+      'Implement new learning and develope all the remaining app from scratch',
+    ],
   ];
 
-  Padding taskShowcase(bool _value, String _taskTitle, int _index) {
+  Padding taskShowcase(bool _value, String taskTitle, int index) {
     return Padding(
       padding: EdgeInsets.only(left: 20, right: 20, top: 20),
       child: Container(
@@ -28,6 +31,7 @@ class _TasksPage extends State<TasksPage> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //CheckBox
             Transform.scale(
@@ -36,32 +40,39 @@ class _TasksPage extends State<TasksPage> {
                 value: _value,
                 fillColor: WidgetStatePropertyAll(Colors.white),
                 shape: CircleBorder(),
-                side: BorderSide(
-                  color: Color.fromARGB(170, 40, 40, 40),
-                ),
-                checkColor:const Color.fromARGB(143, 125, 125, 125) ,
+                side: BorderSide(color: Color.fromARGB(170, 40, 40, 40)),
+                checkColor: const Color.fromARGB(143, 125, 125, 125),
                 onChanged: (value) => {
                   setState(() {
-                    Tasks[_index][0] = !_value;
-                    print('value changed');
+                    Tasks[index][0] = !_value;
                   }),
                 },
               ),
-            )
-            ,
+            ),
             // Task Title
-            Text(
-              _taskTitle,
-              style: TextStyle(
-                color: const Color.fromARGB(148, 0, 0, 0),
-                fontFamily: 'Roboto',
-                fontSize: 20,
-              ) ,
-            )
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.only(top: 10, bottom: 10, right: 15),
+                child: Text(
+                  taskTitle,
+                  textAlign: TextAlign.justify,
+                  softWrap: true,
+                  style: TextStyle(
+                    color: const Color.fromARGB(148, 0, 0, 0),
+                    fontFamily: 'Roboto',
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  Widget addNewTask() {
+    return widget;
   }
 
   @override
@@ -144,11 +155,20 @@ class _TasksPage extends State<TasksPage> {
             // Tasks List Here
             ...List.generate(
               Tasks.length,
-              (i) => taskShowcase(Tasks[i][0] as bool, Tasks[i][1] as String, i),
+              (i) =>
+                  taskShowcase(Tasks[i][0] as bool, Tasks[i][1] as String, i),
             ),
           ],
         ),
       ),
+
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.grey,
+        elevation: 0,
+        child: Icon(Icons.add, size: 38, color: Colors.white),
+        onPressed: () => addNewTask()
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
